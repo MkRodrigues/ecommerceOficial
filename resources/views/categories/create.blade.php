@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<h2>Criando nova Categoria</h2>
+<h2>Nova Categoria</h2>
 <form action="{{route('categories.store')}}" class="p-3 bg-white" method="POST">
     @if($errors->any())
     <div class="alert alert-danger">

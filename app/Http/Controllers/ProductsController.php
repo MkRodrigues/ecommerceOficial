@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateProductRequest;
+use App\Product;
 use Illuminate\Http\Request;
 
 class ProductsController extends Controller
@@ -13,7 +15,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        //
+        return view('products.index')->with('products', Product::all());
     }
 
     /**
@@ -23,7 +25,7 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        //
+        return view('products.create');
     }
 
     /**
@@ -32,9 +34,11 @@ class ProductsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateProductRequest $request)
     {
-        //
+        Product::create($request->all());
+        session()->flash('success', 'Produto criado com sucesso!');
+        return redirect(route('products.index'));
     }
 
     /**
