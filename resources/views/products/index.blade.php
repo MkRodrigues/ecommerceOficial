@@ -12,8 +12,14 @@
             <span>{{$product->name}}</span>
             <div class="float-right">
                 <a class="btn btn-primary btn-sm float-left ml-1" href="">Visualizar</a>
-                <a class="btn btn-warning btn-sm float-left ml-1" href="">Editar</a>
-                <a class="btn btn-danger btn-sm float-left ml-1" href="">Excluir</a>
+                <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning btn-sm float-left ml-1" href="">Editar</a>
+
+                <form action="{{ route('products.destroy', $product->id) }}" class="d-inline" method="POST" onsubmit="return confirm('Você tem certeza que quer apagar?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger btn-sm float-left ml-1">Excluir</a>
+                </form>
+
             </div>
         </li>
         @endforeach

@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateProductRequest;
 use App\Product;
 use Illuminate\Http\Request;
+use App\Http\Requests\CreateProductRequest;
+use App\Http\Requests\EditProductRequest;
 
 class ProductsController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -58,9 +65,9 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Product $product)
     {
-        //
+        return view('products.edit')->with('products', $product);
     }
 
     /**
@@ -70,9 +77,18 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EditProductRequest $request, Product $product)
     {
-        //
+        $product->update([
+            'name' => $request->name,
+            'stock' => $request->stock,
+            'price' => $request->price,
+            'discount' => $request->discount,
+            'description' => $request->description
+            // 'image' => $request->image
+        ]);
+        session()->flash('success', 'Produto atualizado com sucesso!');
+        return redirect(route('products.index'));
     }
 
     /**
@@ -81,8 +97,10 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        session()->flash('success', 'Produto apagado com sucesso!');
+        return redirect(route('products.index'));
     }
 }
