@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <h2>Novo Produto</h2>
-<form action="{{route('products.store')}}" class="p-3 bg-white" method="POST">
+<form action="{{route('products.store')}}" class="p-3 bg-white" method="POST" enctype="multipart/form-data">
     @if($errors->any())
     <div class="alert alert-danger">
         <ul class="list-group">
@@ -16,14 +16,10 @@
         <label for="name">Nome do Produto:</label>
         <input class="form-control" type="text" id="name" name="name" placeholder="Digite o nome do Produto" value="{{old('name')}}">
     </div>
-    {{-- <div class="custom-file mb-3" style="display:none">
-        <input type="text" class="custom-file-input" id="customFile" value="null">
-        <label class="custom-file-label" for="customFile" name="image">Insira uma imagem</label>
-    </div> --}}
 
-    <div class="form-group" style="display:none">
+    <div class="form-group">
         <label for="name">Imagem:</label>
-        <input type="text" class="form-control" name="image" value="null">
+        <input type="file" class="form-control" name="image">
     </div>
 
     <div class="form-group">
@@ -38,6 +34,16 @@
         <label for="discount">Disconto:</label>
         <input class="form-control" type="text" id="discount" name="discount" value="{{old('discount')}}">
     </div>
+
+    <div class="form-group">
+        <label for="category">Categoria:</label>
+        <select name="category_id" class="form-control">
+            @foreach($categories as $category)
+            <option value="{{$category->id}}">{{$category->name}}</option>
+            @endforeach
+        </select>
+    </div>
+
     <div class="form-group">
         <label for="description">Descrição:</label>
         <textarea class="form-control" type="text" id="description" name="description" placeholder="Insira uma breve descrição sobre o produto">{{old('description')}}</textarea>

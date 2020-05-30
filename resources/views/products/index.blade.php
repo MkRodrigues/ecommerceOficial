@@ -9,6 +9,7 @@
     <ul class="list-group">
         @foreach($products as $product)
         <li class="list-group-item">
+            <img src="{{ asset('storage/'.$product->image) }}" width="40" height="40">
             <span>{{$product->name}}</span>
             <div class="float-right">
                 <a class="btn btn-primary btn-sm float-left ml-1" href="">Visualizar</a>

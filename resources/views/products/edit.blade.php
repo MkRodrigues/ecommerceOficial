@@ -22,9 +22,9 @@
         <label class="custom-file-label" for="customFile" name="image">Insira uma imagem</label>
     </div> --}}
 
-    <div class="form-group" style="display:none">
+    <div class="form-group">
         <label for="name">Imagem:</label>
-        <input type="text" class="form-control" name="image" value="null">
+        <input type="image" class="form-control" name="image">
     </div>
 
     <div class="form-group">
@@ -38,6 +38,16 @@
     <div class="form-group">
         <label for="discount">Disconto:</label>
         <input class="form-control" type="text" id="discount" name="discount" value="{{$products->discount}}">
+    </div>
+    <div class="form-group">
+        <label for="name">Categoria:</label>
+        <select name="category_id" id="" class="form-control">
+            @foreach($categories as $category)
+            <option value="{{$category->id}}" @if($category->id == $products->category_id) selected @endif>
+                {{$category->name}}
+            </option>
+            @endforeach
+        </select>
     </div>
     <div class="form-group">
         <label for="description">Descrição:</label>

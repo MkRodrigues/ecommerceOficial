@@ -25,11 +25,12 @@ class EditProductRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255',
-            'image' => 'required',
+            'image' => 'required/image',
             'description' => 'required',
             'price' => 'required',
             'discount' => 'required',
-            'stock' => 'required'
+            'stock' => 'required',
+            'category_id' => 'required'
         ];
     }
 }

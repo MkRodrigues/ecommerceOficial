@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateProductRequest;
@@ -32,7 +33,7 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        return view('products.create');
+        return view('products.create')->with('categories', Category::all())->with('products', Product::all());
     }
 
     /**
@@ -43,7 +44,14 @@ class ProductsController extends Controller
      */
     public function store(CreateProductRequest $request)
     {
-        Product::create($request->all());
+        // Armazena na variável image(Faz uma requisiçao pra imagem inserida no input, e salva ela na pasta storage/public/products)
+        $image = $request->image->store('products');
+        $product = Product::create($request->all());
+
+        // Pega a o campo de imagem via requisição e armazena o valor vindo de $image dentro da classe Produto
+        $product->image = $image;
+        $product->save();
+
         session()->flash('success', 'Produto criado com sucesso!');
         return redirect(route('products.index'));
     }
@@ -67,7 +75,7 @@ class ProductsController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('products.edit')->with('products', $product);
+        return view('products.edit')->with('products', $product)->with('categories', Category::all());
     }
 
     /**
@@ -84,7 +92,8 @@ class ProductsController extends Controller
             'stock' => $request->stock,
             'price' => $request->price,
             'discount' => $request->discount,
-            'description' => $request->description
+            'description' => $request->description,
+            'category_id' => $request->category_id
             // 'image' => $request->image
         ]);
         session()->flash('success', 'Produto atualizado com sucesso!');
