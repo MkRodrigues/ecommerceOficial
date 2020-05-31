@@ -12,7 +12,6 @@ class CategoriesController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
     }
 
     /**
@@ -92,10 +91,31 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        $category->delete();
-        session()->flash('success', 'Categoria apagada com sucesso!');
-        return redirect(route('categories.index'));
+        $category = Category::withTrashed()->where('id', $id)->firstOrFail();
+
+        if ($category->trashed()) {
+            $category->forceDelete();
+            session()->flash('success', 'Categoria apagada com sucesso!');
+        } else {
+
+            $category->delete();
+            session()->flash('success', 'Categoria enviado para lixeira com sucesso!');
+        }
+        return redirect()->back();
+    }
+
+    public function trashed()
+    {
+        return view('categories.index')->with('categories', Category::onlyTrashed()->get());
+    }
+
+    public function restore($id)
+    {
+        $category = Category::onlyTrashed()->where('id', $id)->firstOrFail();
+        $category->restore();
+        session()->flash('success', 'Produto restaurado com sucesso!');
+        return redirect()->back();
     }
 }

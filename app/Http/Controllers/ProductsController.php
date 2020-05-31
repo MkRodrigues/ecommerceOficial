@@ -7,13 +7,15 @@ use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateProductRequest;
 use App\Http\Requests\EditProductRequest;
+use App\Tag;
+use Illuminate\Support\Facades\Storage;
 
 class ProductsController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('VerifyCategoriesCount')->only(['create', 'store']);
     }
 
     /**
@@ -33,7 +35,7 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        return view('products.create')->with('categories', Category::all())->with('products', Product::all());
+        return view('products.create')->with('categories', Category::all())->with('tags', Tag::all());
     }
 
     /**
@@ -51,6 +53,13 @@ class ProductsController extends Controller
         // Pega a o campo de imagem via requisição e armazena o valor vindo de $image dentro da classe Produto
         $product->image = $image;
         $product->save();
+
+        // Se Tags forem selecionadas na criação do produto: 
+        if ($request->tags) {
+            // Chama a função de relacionamento "tags", definida na Model, e faz uma inserção attach na tabela Tags
+            $product->tags()->attach($request->tags);
+        }
+
 
         session()->flash('success', 'Produto criado com sucesso!');
         return redirect(route('products.index'));
@@ -106,10 +115,44 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        $product->delete();
-        session()->flash('success', 'Produto apagado com sucesso!');
-        return redirect(route('products.index'));
+        // Função withTrashed() retorna todos os itens no banco, inclusive os excluídos "SoftDelete"
+        // A função Where é como no Banco de Dados "Select * from where condição"
+        // FirstOrFail faz parte da função Where, e retorna o primeiro resultado ou caso dê erro retorna mensagem de erro de produto não encontrado
+
+        // Procura todos os produtos deletados aonde o Id é igual à variável id no where
+        $product = Product::withTrashed()->where('id', $id)->firstOrFail();
+
+        // Se o produto já estiver no SOftDelete, ele será apagado definitivamente
+        // Senão, será enviado para o SoftDelete
+        // ForceDelete - Força que o produto já excluído seja excluído definitivamente
+        // Ao ser excluído permanentemente, a imagem será excluída através da função storage::delete()
+
+        if ($product->trashed()) {
+            Storage::delete($product->image);
+            $product->forceDelete();
+            session()->flash('success', 'Produto apagado com sucesso!');
+        } else {
+
+            $product->delete();
+            session()->flash('success', 'Produto enviado para lixeira com sucesso!');
+        }
+        // Retorna pra página aonde estava anteriormente
+        return redirect()->back();
+    }
+
+    public function trashed()
+    {
+        return view('products.index')->with('products', Product::onlyTrashed()->get());
+    }
+
+    public function restore($id)
+    {
+        // Busca somente os dados que estiverem na lixeira onlyTrashed()
+        $product = Product::onlyTrashed()->where('id', $id)->firstOrFail();
+        $product->restore();
+        session()->flash('success', 'Produto restaurado com sucesso!');
+        return redirect()->back();
     }
 }

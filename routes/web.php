@@ -24,5 +24,15 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('products', 'ProductsController');
-Route::resource('categories', 'CategoriesController');
+
+Route::middleware('auth')->group(function () {
+    Route::resource('products', 'ProductsController');
+    Route::resource('categories', 'CategoriesController');
+    Route::resource('tags', 'TagsController');
+    Route::get('trashed-product', 'ProductsController@trashed')->name('trashed-products.index');
+    Route::get('trashed-category', 'CategoriesController@trashed')->name('trashed-categories.index');
+    Route::get('trashed-tag', 'TagsController@trashed')->name('trashed-tags.index');
+    Route::put('restore-products/{product}', 'ProductsController@restore')->name('restore-products.update');
+    Route::put('restore-categories/{categories}', 'CategoriesController@restore')->name('restore-categories.update');
+    Route::put('restore-tags/{tag}', 'TagsController@restore')->name('restore-tags.update');
+});

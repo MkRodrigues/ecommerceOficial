@@ -45,6 +45,15 @@
     </div>
 
     <div class="form-group">
+        <label for="category">Tags:</label>
+        <select name="tags[]" class="form-control" multiple>
+            @foreach($tags as $tag)
+            <option value="{{$tag->id}}">{{$tag->name}}</option>
+            @endforeach
+        </select>
+    </div>
+
+    <div class="form-group">
         <label for="description">Descrição:</label>
         <textarea class="form-control" type="text" id="description" name="description" placeholder="Insira uma breve descrição sobre o produto">{{old('description')}}</textarea>
     </div>
