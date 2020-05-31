@@ -19,4 +19,9 @@ class Product extends Model
     {
         return $this->belongsToMany(Tag::class);
     }
+
+    public function hasTag($tagID)
+    {
+        return in_array($tagID, $this->tags->pluck('id')->toArray());
+    }
 }

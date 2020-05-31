@@ -50,6 +50,17 @@
         </select>
     </div>
     <div class="form-group">
+        <label for="category">Tags:</label>
+        <select name="tags[]" class="form-control" multiple>
+            @foreach($tags as $tag)
+            {{-- a função hasTag criada na Model Produto verifica quais tags foram selecionadas na criacão do respectivo produto e seleciona quais foram escolhidas --}}
+            <option value="{{$tag->id}}" {{$products->hasTag($tag->id) ? 'selected' : ''}}>
+                {{$tag->name}}
+            </option>
+            @endforeach
+        </select>
+    </div>
+    <div class="form-group">
         <label for="description">Descrição:</label>
         <textarea class="form-control" type="text" id="description" name="description" placeholder="Insira uma breve descrição sobre o produto">{{$products->description}}</textarea>
     </div>

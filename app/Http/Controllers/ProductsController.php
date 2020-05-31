@@ -84,7 +84,7 @@ class ProductsController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('products.edit')->with('products', $product)->with('categories', Category::all());
+        return view('products.edit')->with('products', $product)->with('categories', Category::all())->with('tags', Tag::all());
     }
 
     /**
@@ -105,6 +105,12 @@ class ProductsController extends Controller
             'category_id' => $request->category_id
             // 'image' => $request->image
         ]);
+
+        // Identifica o produto com a Tag pela função Tag definida na model de Tags, e sincroniza com o que vem de requisição
+        if ($request->tags) {
+            $product->tags()->sync($request->tags);
+        }
+
         session()->flash('success', 'Produto atualizado com sucesso!');
         return redirect(route('products.index'));
     }
