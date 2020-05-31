@@ -103,12 +103,26 @@ class ProductsController extends Controller
             'discount' => $request->discount,
             'description' => $request->description,
             'category_id' => $request->category_id
-            // 'image' => $request->image
         ]);
 
         // Identifica o produto com a Tag pela função Tag definida na model de Tags, e sincroniza com o que vem de requisição
         if ($request->tags) {
             $product->tags()->sync($request->tags);
+        }
+
+        // Se uma nova imagem for passada os requisitos abaixo serão cumpridos, se não, nada será feito mantendo a imagem atual
+        if ($request->image) {
+            // Exclui a imagem antiga
+            Storage::delete($product->image);
+
+            // Salva a imagem nova
+            $image = $request->image->store('products');
+
+            // Atualiza no banco a nova imagem
+            $product->image = $image;
+
+            // Salva no banco
+            $product->save();
         }
 
         session()->flash('success', 'Produto atualizado com sucesso!');

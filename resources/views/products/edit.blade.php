@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <h2>Editar Produto</h2>
-<form action="{{route('products.update', $products->id)}}" class="p-3 bg-white" method="POST">
+<form action="{{route('products.update', $products->id)}}" class="p-3 bg-white" method="POST" enctype="multipart/form-data">
     @if($errors->any())
     <div class="alert alert-danger">
         <ul class="list-group">
@@ -17,14 +17,10 @@
         <label for="name">Nome do Produto:</label>
         <input class="form-control" type="text" id="name" name="name" placeholder="Digite o nome do Produto" value="{{$products->name}}">
     </div>
-    {{-- <div class="custom-file mb-3" style="display:none">
-        <input type="text" class="custom-file-input" id="customFile" value="null">
-        <label class="custom-file-label" for="customFile" name="image">Insira uma imagem</label>
-    </div> --}}
 
     <div class="form-group">
-        <label for="name">Imagem:</label>
-        <input type="image" class="form-control" name="image">
+        <label for="image">Imagem:</label>
+        <input type="file" class="form-control" name="image">
     </div>
 
     <div class="form-group">
