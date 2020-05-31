@@ -25,7 +25,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::middleware('auth')->group(function () {
+// Estas rotas somente podem ser acessadas por usuário autenticados e que forem administradores (Kernel admin / Middleware VerifyisAdmin)
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('products', 'ProductsController');
     Route::resource('categories', 'CategoriesController');
     Route::resource('tags', 'TagsController');
@@ -35,4 +36,6 @@ Route::middleware('auth')->group(function () {
     Route::put('restore-products/{product}', 'ProductsController@restore')->name('restore-products.update');
     Route::put('restore-categories/{categories}', 'CategoriesController@restore')->name('restore-categories.update');
     Route::put('restore-tags/{tag}', 'TagsController@restore')->name('restore-tags.update');
+    Route::get('users', 'UsersController@index')->name('users.index');
+    Route::put('users/{user}/change-admin', 'UsersController@changeAdmin')->name('users.change-admin');
 });
