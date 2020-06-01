@@ -23,6 +23,7 @@ Route::get('/', 'HomeController@show');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/search/category/{category}', 'HomeController@searchCategory')->name('search-category');
 Route::get('/search/tag/{tag}', 'HomeController@searchTag')->name('search-tag');
+Route::get('/show/{product}', 'HomeController@showProduct')->name('show-product');
 
 // Somente os usuários autenticados
 Route::middleware(['auth'])->group(function () {

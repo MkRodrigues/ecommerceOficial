@@ -18,8 +18,8 @@
                 <span>{{$product->discountPrice()}}</span>
             </div>
             <div class="text-center mt-3">
-                <a class="btn btn-primary btn-sm" href="#">Visualizar</a>
-                <a class="btn btn-secondary btn-sm text-white" href="">Comprar</a>
+                <a class="btn btn-primary btn-sm" href="{{ route('show-product', $product->id) }}">Visualizar</a>
+                <a class="btn btn-secondary btn-sm text-white" href="{{ route('show-product', $product->id) }}">Comprar</a>
             </div>
         </div>
         @endforeach

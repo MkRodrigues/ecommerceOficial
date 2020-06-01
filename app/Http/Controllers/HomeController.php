@@ -32,4 +32,9 @@ class HomeController extends Controller
     {
         return view('store.search')->with('products', $tag->products()->paginate(4))->with('title', $tag->name);
     }
+
+    public function showProduct(Product $product)
+    {
+        return view('store.product')->with('product', $product);
+    }
 }
