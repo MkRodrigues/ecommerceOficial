@@ -24,4 +24,19 @@ class Product extends Model
     {
         return in_array($tagID, $this->tags->pluck('id')->toArray());
     }
+
+    public function discountPrice()
+    {
+        return $this->formatMoney($this->price * (1 - $this->discount / 100));
+    }
+
+    public function price()
+    {
+        return $this->formatMoney($this->price);
+    }
+
+    public function formatMoney($value)
+    {
+        return 'R$ ' . number_format($value, 2);
+    }
 }

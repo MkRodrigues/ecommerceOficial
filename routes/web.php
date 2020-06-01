@@ -13,19 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 // Route::get('/linkstorage', function () {
 //     Artisan::call('storage:link');
 // });
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@show');
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/home', 'HomeController@index')->name('home');
     Route::get('user/profile', 'UsersCOntroller@edit')->name('users.edit-profile');
     Route::put('user/profile', 'UsersCOntroller@update')->name('users.update-profile');
 });
