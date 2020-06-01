@@ -17,15 +17,18 @@ use Illuminate\Support\Facades\Route;
 //     Artisan::call('storage:link');
 // });
 
+// Qualquer usuário pode acessar
 Auth::routes();
 Route::get('/', 'HomeController@show');
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/search/category/{category}', 'HomeController@searchCategory')->name('search-category');
+Route::get('/search/tag/{tag}', 'HomeController@searchTag')->name('search-tag');
 
+// Somente os usuários autenticados
 Route::middleware(['auth'])->group(function () {
-    Route::get('/home', 'HomeController@index')->name('home');
     Route::get('user/profile', 'UsersCOntroller@edit')->name('users.edit-profile');
     Route::put('user/profile', 'UsersCOntroller@update')->name('users.update-profile');
 });
-
 
 // Estas rotas somente podem ser acessadas por usuário autenticados e que forem administradores (Kernel admin / Middleware VerifyisAdmin)
 Route::middleware(['auth', 'admin'])->group(function () {

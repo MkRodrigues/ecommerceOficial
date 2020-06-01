@@ -30,54 +30,77 @@
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+        <header>
+            <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+                <div class="container">
+                    <a class="navbar-brand" href="{{ url('/') }}">
+                        {{ config('app.name', 'Laravel') }}
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <!-- Left Side Of Navbar -->
+                        <ul class="navbar-nav mr-auto">
 
-                    </ul>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-toggle="dropdown">
+                                    Categorias
+                                </a>
+                                <div class="dropdown-menu">
+                                    @foreach(\App\Category::all() as $category)
+                                    <a class="dropdown-item" href="{{ route('search-category', $category->id) }}">{{$category->name}}</a>
+                                    @endforeach
+                                </div>
+                            </li>
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                        </li>
-                        @if (Route::has('register'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                        </li>
-                        @endif
-                        @else
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->name }} <span class="caret"></span>
-                            </a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-toggle="dropdown">
+                                    Tags
+                                </a>
+                                <div class="dropdown-menu">
+                                    {{-- Busca todas as categorias da Classe Categorias e filtra elas por nome --}}
+                                    @foreach(\App\Tag::all()->sortBy('name') as $tag)
+                                    <a class="dropdown-item" href="{{ route('search-tag', $tag->id) }}">{{$tag->name}}</a>
+                                    @endforeach
+                                </div>
+                            </li>
+                        </ul>
 
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('users.edit-profile') }}">Editar Perfil</a>
+                        <!-- Right Side Of Navbar -->
+                        <ul class="navbar-nav ml-auto">
+                            <!-- Authentication Links -->
+                            @guest
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            </li>
+                            @if (Route::has('register'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            </li>
+                            @endif
+                            @else
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                </a>
 
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="dropdown-item">{{ __('Logout') }}</button>
-                                </form>
-                            </div>
-                        </li>
-                        @endguest
-                    </ul>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('users.edit-profile') }}">Editar Perfil</a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item">{{ __('Logout') }}</button>
+                                    </form>
+                                </div>
+                            </li>
+                            @endguest
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </nav>
-
+            </nav>
+        </header>
         <main class="py-4 container">
             @if(session()->has('success'))
             <div class="alert alert-success">
@@ -91,6 +114,32 @@
             @endif
             @yield('content')
         </main>
+        <footer class="container bg-primary text-white p-4">
+            <div class="row">
+                <div class="col-sm-12 col-md-4">
+                    <h2 class="h4 ">Endereço</h2>
+                    <adress>
+                        Rua Lorem, ipsum dolor.386 <br>
+                        Bairro Lorem, ipsum. <br>
+                        Cep 000-00000 <br>
+                        Telefone (11)00000-0000
+                    </adress>
+                </div>
+                <div class="col-s-12 col-md-4">
+                    <h2 class="h4 ">Horário de Funcionamento Loja Física</h2>
+                    <ul class="list-unstyled pl-2">
+                        <li>Segunda a Sexta: Das 9h às 20h</li>
+                        <li>Sábado das 9h às 18h</li>
+                    </ul>
+
+                </div>
+                <div class="col-sm-12 col-md-4">
+                    <h2 class="h4 ">Mapa</h2>
+
+                    <iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=-46.70502662658692%2C-23.626527592003423%2C-46.69498443603516%2C-23.61997114091615&amp;layer=mapnik" style="border: 1px solid black"></iframe>
+                </div>
+            </div>
+        </footer>
     </div>
 </body>
 

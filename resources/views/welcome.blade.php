@@ -9,10 +9,6 @@
         background-repeat: no-repeat;
         background-attachment: fixed;
     }
-
-    .old-price {
-        text-decoration: line-through;
-    }
 </style>
 @endsection
 
@@ -29,6 +25,7 @@
     <div class="row">
         <div class="mx-auto col-md-10 text-center">
             <h2 class="text-uppercase">Nossos produtos</h2>
+            <p class="text-muted">Lorem ipsum dolor sit amet consectetur adipisicing elit. Et, laborum!</p>
         </div>
     </div>
     <div class="row">
