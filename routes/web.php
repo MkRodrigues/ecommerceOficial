@@ -25,6 +25,12 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('user/profile', 'UsersCOntroller@edit')->name('users.edit-profile');
+    Route::put('user/profile', 'UsersCOntroller@update')->name('users.update-profile');
+});
+
+
 // Estas rotas somente podem ser acessadas por usuário autenticados e que forem administradores (Kernel admin / Middleware VerifyisAdmin)
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('products', 'ProductsController');
