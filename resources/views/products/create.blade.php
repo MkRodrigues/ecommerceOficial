@@ -1,4 +1,11 @@
 @extends('layouts.app')
+@section('javascript')
+<script>
+    window.onload = function() {
+            $('.select2').select2();
+        };
+</script>
+@endsection
 @section('content')
 <h2>Novo Produto</h2>
 <form action="{{route('products.store')}}" class="p-3 bg-white" method="POST" enctype="multipart/form-data">
@@ -46,7 +53,7 @@
 
     <div class="form-group">
         <label for="category">Tags:</label>
-        <select name="tags[]" class="form-control" multiple>
+        <select name="tags[]" class="form-control select2" multiple>
             @foreach($tags as $tag)
             <option value="{{$tag->id}}">{{$tag->name}}</option>
             @endforeach

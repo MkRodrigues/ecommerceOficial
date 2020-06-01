@@ -94,6 +94,12 @@ class CategoriesController extends Controller
     public function destroy($id)
     {
         $category = Category::withTrashed()->where('id', $id)->firstOrFail();
+        // Conta quantos produtos estão usando categorias, e impede que o usuário as excluem, retornando mensagem de erro
+        $product = $category->products()->count();
+        if ($product > 0) {
+            session()->flash('error', 'Esta categoria possui (' . $product . ') produto(s) em uso e portanto não pode ser excluída!');
+            return redirect()->back();
+        }
 
         if ($category->trashed()) {
             $category->forceDelete();
