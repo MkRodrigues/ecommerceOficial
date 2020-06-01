@@ -1,4 +1,11 @@
 @extends('layouts.app')
+@section('javascript')
+<script>
+    window.onload = function() {
+            $('.select2').select2();
+        };
+</script>
+@endsection
 @section('content')
 <h2>Editar Produto</h2>
 <form action="{{route('products.update', $products->id)}}" class="p-3 bg-white" method="POST" enctype="multipart/form-data">
@@ -47,7 +54,7 @@
     </div>
     <div class="form-group">
         <label for="category">Tags:</label>
-        <select name="tags[]" class="form-control" multiple>
+        <select name="tags[]" class="form-control select2" multiple>
             @foreach($tags as $tag)
             {{-- a função hasTag criada na Model Produto verifica quais tags foram selecionadas na criacão do respectivo produto e seleciona quais foram escolhidas --}}
             <option value="{{$tag->id}}" {{$products->hasTag($tag->id) ? 'selected' : ''}}>
