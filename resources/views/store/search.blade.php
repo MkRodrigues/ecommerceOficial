@@ -9,7 +9,7 @@
         </div>
     </div>
     <div class="row">
-        @foreach($products as $product)
+        @forelse($products as $product)
         <div class="mx-auto col-sm-10 col-md-6 col-lg-3">
             <img src="{{ asset('storage/'.$product->image) }}" class="img-fluid" alt="">
             <span class="d-block h6 text-center mt-3">{{$product->name}}</span>
@@ -22,10 +22,14 @@
                 <a class="btn btn-secondary btn-sm text-white" href="{{ route('show-product', $product->id) }}">Comprar</a>
             </div>
         </div>
-        @endforeach
+        @empty
+        <div class="mx-auto">
+            <p>Não foi encontrado nenhum termo para a pesquisa <strong>{{request()->query('s')}}</strong></p>
+        </div>
+        @endforelse
     </div>
     <div class="d-flex justify-content-center mt-5">
-        {{$products->links()}}
+        {{ $products->appends(['s' => request()->query('s')])->links() }}
     </div>
 </section>
 @endsection

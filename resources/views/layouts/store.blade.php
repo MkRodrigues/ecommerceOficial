@@ -68,7 +68,15 @@
                                 </div>
                             </li>
                         </ul>
-
+                        <form class="form-group m-0 w-50" action="{{route('search-product')}}">
+                            <div class="input-group"><input type="text" class="form-control" placeholder="Digite o nome do prooduto" name="s">
+                                <div class="input-group-append">
+                                    <div class="input-group-text p-0">
+                                        <button class="border-0" type="submit"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                         <!-- Right Side Of Navbar -->
                         <ul class="navbar-nav ml-auto">
                             <!-- Authentication Links -->

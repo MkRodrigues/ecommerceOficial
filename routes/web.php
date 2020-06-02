@@ -22,6 +22,7 @@ Auth::routes();
 Route::get('/', 'HomeController@show');
 Route::get('/search/category/{category}', 'HomeController@searchCategory')->name('search-category');
 Route::get('/search/tag/{tag}', 'HomeController@searchTag')->name('search-tag');
+Route::get('/search/product', 'HomeController@searchProduct')->name('search-product');
 Route::get('/show/{product}', 'HomeController@showProduct')->name('show-product');
 
 // Somente os usuários autenticados
