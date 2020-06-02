@@ -15,6 +15,7 @@
     {{-- Defer Executa o javascript depois que carregou a página --}}
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js" defer></script>
+    <script src="https://kit.fontawesome.com/61f35be86b.js" crossorigin="anonymous"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -88,12 +89,17 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('users.edit-profile') }}">Editar Perfil</a>
-
+                                    @if(Auth::user()->isAdmin())
+                                    <a class="dropdown-item" href="{{ route('home') }}">Portal do Administrador</a>
+                                    @endif
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                         @csrf
                                         <button type="submit" class="dropdown-item">{{ __('Logout') }}</button>
                                     </form>
                                 </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('cart') }}"><i class="fas fa-shopping-cart"></i>{{Auth::user()->cart->products()->count()}}</a>
                             </li>
                             @endguest
                         </ul>

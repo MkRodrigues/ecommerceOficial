@@ -20,7 +20,6 @@ use Illuminate\Support\Facades\Route;
 // Qualquer usuário pode acessar
 Auth::routes();
 Route::get('/', 'HomeController@show');
-Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/search/category/{category}', 'HomeController@searchCategory')->name('search-category');
 Route::get('/search/tag/{tag}', 'HomeController@searchTag')->name('search-tag');
 Route::get('/show/{product}', 'HomeController@showProduct')->name('show-product');
@@ -29,10 +28,14 @@ Route::get('/show/{product}', 'HomeController@showProduct')->name('show-product'
 Route::middleware(['auth'])->group(function () {
     Route::get('user/profile', 'UsersCOntroller@edit')->name('users.edit-profile');
     Route::put('user/profile', 'UsersCOntroller@update')->name('users.update-profile');
+    Route::get('/cart', 'CartsController@index')->name('cart');
+    Route::get('/cart/{product}/store', 'CartsController@store')->name('cart-store');
+    Route::get('/cart/{product}/remove', 'CartsController@destroy')->name('cart-remove');
 });
 
 // Estas rotas somente podem ser acessadas por usuário autenticados e que forem administradores (Kernel admin / Middleware VerifyisAdmin)
 Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/home', 'HomeController@index')->name('home');
     Route::resource('products', 'ProductsController');
     Route::resource('categories', 'CategoriesController');
     Route::resource('tags', 'TagsController');
